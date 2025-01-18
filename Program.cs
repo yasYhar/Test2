@@ -36,12 +36,12 @@ namespace Test2
 
     }
     interface Icalc {
-        public int Num1 { get; set; }
-        public int Num2 { get; set;}
-        public int calcAdd(int Num1 , int Num2);
-        public int calcMinus(int Num1 , int Num2);
-        public int calcMulti(int Num1 , int Num2);
-        public string calcDiv(int Num1 , int Num2);
+        int Num1 { get; set; }
+        int Num2 { get; set;}
+        int calcAdd(int Num1 , int Num2);
+        int calcMinus(int Num1 , int Num2);
+        int calcMulti(int Num1 , int Num2);
+        string calcDiv(int Num1 , int Num2);
 
     }
 
