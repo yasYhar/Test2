@@ -6,63 +6,80 @@ namespace Test2
     {
         static void Main(string[] args)
         {
-            Calc Equ = new Calc();
+            ICalc calc = new CalcMinus();
             Console.WriteLine("Enter integer1 :");
-            Equ.Num1 = Convert.ToInt32(Console.ReadLine());
+            int Num1 = Convert.ToInt32(Console.ReadLine());
             Console.WriteLine("Enter integer2 :");
-            Equ.Num2 = Convert.ToInt32(Console.ReadLine());
-            Console.WriteLine("Select Op :");
-            String ?Op = Console.ReadLine();
-            switch (Op)
-            {
-                case "+" :
-                    Console.WriteLine(Equ.calcAdd(Equ.Num1 , Equ.Num2));
-                    break;
-                case "-" :
-                    Console.WriteLine(Equ.calcMinus(Equ.Num1, Equ.Num2));
-                    break;
-                case "*":
-                    Console.WriteLine(Equ.calcMulti(Equ.Num1, Equ.Num2));
-                    break;
-                case "/":
-                    Console.WriteLine(Equ.calcDiv(Equ.Num1, Equ.Num2));
-                    break;
-                default :
-                    Console.WriteLine("Invalid Op");
-                    break;
-            }
-
+            int Num2 = Convert.ToInt32(Console.ReadLine());
+            Equ Result = new Equ(calc, Num1, Num2);
+            Console.WriteLine(Result.Ops());
         }
 
     }
-    interface Icalc {
-        int Num1 { get; set; }
-        int Num2 { get; set;}
-        int calcAdd(int Num1 , int Num2);
-        int calcMinus(int Num1 , int Num2);
-        int calcMulti(int Num1 , int Num2);
-        string calcDiv(int Num1 , int Num2);
-
-    }
-
-    public class Calc : Icalc {
+    public interface ICalc
+    {
         public int Num1 { get; set; }
         public int Num2 { get; set; }
-        public int calcAdd(int Num1, int Num2) { return Num1 + Num2; }
-        public int calcMinus(int Num1, int Num2) {return Num1 - Num2; }
-        public string calcDiv(int Num1, int Num2)
-        {
-                try
-                {
-                    string str = Convert.ToString(Num1 / Num2);
-                    return str;
-            }
-                catch (DivideByZeroException)
-                {
-                    return "Divided By Zero";
-                }      
-        }
-        public int calcMulti(int Num1, int Num2) {return Num1 * Num2; }  
+        public int CalcOps(int Num1, int Num2);
+
     }
+
+    public class CalcAdd : ICalc
+    {
+        public int Num1 { get; set; }
+        public int Num2 { get; set; }
+        public int CalcOps(int Num1, int Num2) { return Num1 + Num2; }
+    }
+
+    public class CalcMinus : ICalc
+    {
+        public int Num1 { get; set; }
+        public int Num2 { get; set; }
+        public int CalcOps(int Num1, int Num2) { return Num1 - Num2; }
+    }
+
+    public class CalcMulti : ICalc
+    {
+        public int Num1 { get; set; }
+        public int Num2 { get; set; }
+        public int CalcOps(int Num1, int Num2) { return Num1 * Num2; }
+    }
+
+    public class CalcDiv : ICalc
+    {
+        public int Num1 { get; set; }
+        public int Num2 { get; set; }
+        public int CalcOps(int Num1, int Num2) { 
+            if (Num2 == 0) {
+                return 0;
+            }
+            else
+                return Num1 / Num2;
+        }
+    }
+
+    public class Equ {
+        public ICalc ?Int;
+        public int Int1 { get; set; }
+        public int Int2 { get; set; }
+        public Equ( ICalc Int , int Int1 , int Int2) {
+            this.Int = Int;  
+            this.Int1 = Int1;
+            this.Int2 = Int2;
+        }
+
+        public int Ops () {
+            if (Int == null)
+            {
+                throw new InvalidOperationException("Dependency not injected.");
+            }
+
+            return Int.CalcOps(Int1, Int2);
+        }
+    }
+
 }
+
+
+
 
