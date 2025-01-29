@@ -7,7 +7,7 @@ namespace Test2
         static void Main(string[] args)
         {
             ICalc calc = new CalcDiv();
-            List<int> Numbers = [10, 2, 5];
+            List<int> Numbers = [10, 1, 5];
             Equ Result = new Equ(calc , Numbers);
             Console.WriteLine(Result.Ops());
         }
@@ -77,23 +77,22 @@ namespace Test2
     }
 
     public class Equ {
-        public ICalc ?Int;
-        public List<int> Numbers;
+        private readonly ICalc _int;
+        private readonly List<int> _numbers;
         public Equ(ICalc Int, List<int> Numbers) {
-            this.Int = Int; 
-            this.Numbers = Numbers;
+            _int = Int; 
+            _numbers = Numbers;
         }
 
         public int Ops () {
-            if (Int == null)
+            if (_int == null)
             {
                 throw new InvalidOperationException("Dependency not injected.");
             }
 
-            return Int.CalcOps(Numbers);
+            return _int.CalcOps(_numbers);
         }
     }
-
 }
 
 
